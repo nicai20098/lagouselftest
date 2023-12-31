@@ -17,7 +17,7 @@ public class Configuration {
     //数据源
     private DataSource dataSource;
     //map集合： key:statementId value:MappedStatement
-    private Map<String, MappedStatement> mappedStatementMap = new HashMap<String, MappedStatement>();
+    private Map<String, MappedStatement> mappedStatementMap = new HashMap<>();
 
     public DataSource getDataSource() {
         return dataSource;

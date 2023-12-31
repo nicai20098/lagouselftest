@@ -1,0 +1,9 @@
+<mapper namespace="user">
+    <!--  sql唯一标识： namespace.id来组成  -->
+    <select id="selectOne" paramterType="com.jiabb.entity.User" resultType="com.jiabb.entity.User">
+        select * from user where id = #{id} and username = #{username}
+    </select>
+    <select id="selectList" resultType="com.jiabb.entity.User">
+        select * from user
+    </select>
+</mapper>

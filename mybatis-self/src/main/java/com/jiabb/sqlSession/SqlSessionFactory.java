@@ -1,4 +1,6 @@
-package com.jiabb.util;
+package com.jiabb.sqlSession;
+
+import com.jiabb.sqlSession.SqlSession;
 
 /**
  * @description: TODO

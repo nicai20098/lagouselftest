@@ -1,6 +1,7 @@
 package com.jiabb.util;
 
 import com.jiabb.config.Configuration;
+import com.jiabb.io.Resources;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -23,16 +24,18 @@ public class XMLConfigerBuilder {
     private Configuration configuration;
 
     public XMLConfigerBuilder(Configuration configuration) {
-        this.configuration = new Configuration();
+        this.configuration = configuration;
     }
 
-    public Configuration parseConfiguration(InputStream inputStream) throws
-            DocumentException, PropertyVetoException, ClassNotFoundException {
+    /**
+     * 将配置文件进行解析封装Configuration
+     */
+    public Configuration parseConfiguration(InputStream inputStream) throws DocumentException, PropertyVetoException, ClassNotFoundException {
         Document document = new SAXReader().read(inputStream);
         //<configuation>
         Element rootElement = document.getRootElement();
-        List<Element> propertyElements =
-                rootElement.selectNodes("//property");
+        //获取全部property的属性
+        List<Element> propertyElements = rootElement.selectNodes("//property");
         Properties properties = new Properties();
         for (Element propertyElement : propertyElements) {
             String name = propertyElement.attributeValue("name");
@@ -40,8 +43,7 @@ public class XMLConfigerBuilder {
             properties.setProperty(name, value);
         }
         //连接池
-        ComboPooledDataSource comboPooledDataSource = new
-                ComboPooledDataSource();
+        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
         comboPooledDataSource.setDriverClass(properties.getProperty("driverClass"));
         comboPooledDataSource.setJdbcUrl(properties.getProperty("jdbcUrl"));
         comboPooledDataSource.setUser(properties.getProperty("username"));
@@ -50,12 +52,10 @@ public class XMLConfigerBuilder {
         configuration.setDataSource(comboPooledDataSource);
         //mapper 部分
         List<Element> mapperElements = rootElement.selectNodes("//mapper");
-        XMLMapperBuilder xmlMapperBuilder = new
-                XMLMapperBuilder(configuration);
+        XMLMapperBuilder xmlMapperBuilder = new XMLMapperBuilder(configuration);
         for (Element mapperElement : mapperElements) {
             String mapperPath = mapperElement.attributeValue("resource");
-            InputStream resourceAsSteam =
-                    Resources.getResourceAsSteam(mapperPath);
+            InputStream resourceAsSteam = Resources.getResourceAsSteam(mapperPath);
             xmlMapperBuilder.parse(resourceAsSteam);
         }
         return configuration;

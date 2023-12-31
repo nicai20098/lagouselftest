@@ -1,0 +1,12 @@
+<configuration>
+    <!--数据库连接信息-->
+    <dataSource>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://8.141.51.79:3306/python"/>
+        <property name="user" value="admin"/>
+        <property name="password" value="password"/>
+    </dataSource>
+
+    <!--引入sql配置信息-->
+    <mapper resource="userMapper.xml"/>
+</configuration>

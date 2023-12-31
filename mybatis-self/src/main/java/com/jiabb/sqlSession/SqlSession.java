@@ -1,4 +1,4 @@
-package com.jiabb.util;
+package com.jiabb.sqlSession;
 
 import java.sql.SQLException;
 import java.util.List;

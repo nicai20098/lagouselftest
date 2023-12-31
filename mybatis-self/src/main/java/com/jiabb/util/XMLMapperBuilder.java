@@ -2,6 +2,7 @@ package com.jiabb.util;
 
 import com.jiabb.config.Configuration;
 import com.jiabb.mapping.MappedStatement;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -24,37 +25,40 @@ public class XMLMapperBuilder {
         this.configuration = configuration;
     }
 
-    public void parse(InputStream inputStream) throws DocumentException,
-            ClassNotFoundException {
+    public void parse(InputStream inputStream) throws DocumentException, ClassNotFoundException {
         Document document = new SAXReader().read(inputStream);
         Element rootElement = document.getRootElement();
         String namespace = rootElement.attributeValue("namespace");
-        List<Element> select = rootElement.selectNodes("select");
+        List<Element> select = rootElement.selectNodes("//select");
         for (Element element : select) { //id的值
             String id = element.attributeValue("id");
             String paramterType = element.attributeValue("paramterType");
-            String resultType = element.attributeValue("resultType"); //输入参数class
-            Class<?> paramterTypeClass = getClassType(paramterType);
+            String resultType = element.attributeValue("resultType");
+            MappedStatement mappedStatement = new MappedStatement();
+            //输入参数class
+            if (StringUtils.isNotEmpty(paramterType)) {
+                Class<?> paramterTypeClass = getClassType(paramterType);
+                mappedStatement.setParamterType(paramterTypeClass);
+            }
             //返回结果class
-            Class<?> resultTypeClass = getClassType(resultType);
+            if (StringUtils.isNotEmpty(resultType)) {
+                Class<?> resultTypeClass = getClassType(resultType);
+                mappedStatement.setResultType(resultTypeClass);
+            }
             //statementId
             String key = namespace + "." + id;
             //sql语句
             String textTrim = element.getTextTrim();
             //封装 mappedStatement
-            MappedStatement mappedStatement = new MappedStatement();
             mappedStatement.setId(id);
-            mappedStatement.setParamterType(paramterTypeClass);
-            mappedStatement.setResultType(resultTypeClass);
             mappedStatement.setSql(textTrim);
             //填充 configuration
             configuration.getMappedStatementMap().put(key, mappedStatement);
         }
     }
 
-    private Class<?> getClassType (String paramterType) throws
-            ClassNotFoundException {
-        Class<?> aClass = Class.forName(paramterType);
-        return aClass;
+    private Class<?> getClassType(String classType) throws ClassNotFoundException {
+        System.out.println("classType -> " + classType);
+        return Class.forName(classType);
     }
 }

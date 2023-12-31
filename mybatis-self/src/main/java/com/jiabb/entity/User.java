@@ -1,4 +1,4 @@
-package com.jiabb.pojo;
+package com.jiabb.entity;
 
 /**
  * @description: 实体用户类

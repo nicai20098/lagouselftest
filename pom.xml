@@ -12,6 +12,7 @@
     <modules>
         <module>mybatis-self</module>
         <module>mybatis-quickstart</module>
+        <module>mybatis-common-mapper</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

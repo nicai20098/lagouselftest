@@ -9,7 +9,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mybatis-quickstart</artifactId>
+    <artifactId>mybatis-common-mapper</artifactId>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,23 +46,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.16</version>
-        </dependency>
-        <!--   二级缓存集成redis     -->
-        <dependency>
-            <groupId>org.mybatis.caches</groupId>
-            <artifactId>mybatis-redis</artifactId>
-            <version>1.0.0-beta2</version>
-        </dependency>
-        <!--    pageHelper 插件    -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>3.7.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.jsqlparser</groupId>
-            <artifactId>jsqlparser</artifactId>
-            <version>0.9.1</version>
         </dependency>
         <!--   通用mapper     -->
         <dependency>

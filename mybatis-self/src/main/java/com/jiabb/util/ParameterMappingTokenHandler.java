@@ -1,10 +1,9 @@
-package com.jiabb.parsing;
+package com.jiabb.util;
 
 import com.jiabb.mapping.ParameterMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description: TODO
@@ -12,7 +11,7 @@ import java.util.Map;
  * @date: 2023/5/6 23:53
  * @since: 1.0
  */
-public class ParameterMappingTokenHandler implements TokenHandler{
+public class ParameterMappingTokenHandler implements TokenHandler {
 
     private List<ParameterMapping> parameterMappings = new ArrayList<>();
     private Class<?> parameterType;
@@ -31,6 +30,8 @@ public class ParameterMappingTokenHandler implements TokenHandler{
     }
 
     private ParameterMapping buildParameterMapping(String content) {
+        ParameterMapping parameterMapping = new ParameterMapping(content);
+        return parameterMapping;
 //        Map<String, String> propertiesMap = parseParameterMapping(content);
 //        String property = propertiesMap.get("property");
 //        Class<?> propertyType;
@@ -83,7 +84,6 @@ public class ParameterMappingTokenHandler implements TokenHandler{
 //            builder.typeHandler(resolveTypeHandler(javaType, typeHandlerAlias));
 //        }
 //        return builder.build();
-        return null;
     }
 
 }

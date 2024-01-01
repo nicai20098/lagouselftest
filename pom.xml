@@ -11,6 +11,7 @@
     <description>自测项目</description>
     <modules>
         <module>mybatis-self</module>
+        <module>mybatis-quickstart</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

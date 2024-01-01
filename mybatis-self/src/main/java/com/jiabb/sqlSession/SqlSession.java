@@ -17,4 +17,7 @@ public interface SqlSession {
 
     public void close() throws SQLException;
 
+    //获取mapper实现类
+    public <T> T getMapper(Class<?> mapperClass);
+
 }

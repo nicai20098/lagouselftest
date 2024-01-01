@@ -1,4 +1,4 @@
-package com.jiabb.parsing;
+package com.jiabb.util;
 
 /**
  * @description: TODO
@@ -8,7 +8,9 @@ package com.jiabb.parsing;
  */
 public class GenericTokenParser {
 
+    //开始标记
     private final String openToken;
+    //结束标记
     private final String closeToken;
     private final TokenHandler handler;
 

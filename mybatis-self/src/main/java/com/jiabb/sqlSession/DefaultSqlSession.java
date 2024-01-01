@@ -1,11 +1,14 @@
 package com.jiabb.sqlSession;
 
 import com.jiabb.config.Configuration;
+import com.jiabb.io.Resources;
 import com.jiabb.mapping.MappedStatement;
 import com.jiabb.sqlSession.SqlSession;
 import com.jiabb.util.Executor;
 import com.jiabb.util.SimpleExecutor;
 
+import java.io.InputStream;
+import java.lang.reflect.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -29,8 +32,7 @@ public class DefaultSqlSession implements SqlSession {
     public <E> List<E> selectList(String statementId, Object... param)
             throws Exception {
         MappedStatement mappedStatement = configuration.getMappedStatementMap().get(statementId);
-        List<E> query = simpleExcutor.query(configuration, mappedStatement, param);
-        return query;
+        return simpleExcutor.query(configuration, mappedStatement, param);
     }
 
     //selectOne 中调用 selectList
@@ -48,5 +50,29 @@ public class DefaultSqlSession implements SqlSession {
     @Override
     public void close() throws SQLException {
         simpleExcutor.close();
+    }
+
+    @Override
+    public <T> T getMapper(Class<?> mapperClass) {
+        //使用动态代理为dao生成代理对象
+        Object proxyInstance = Proxy.newProxyInstance(DefaultSqlSession.class.getClassLoader(), new Class[]{mapperClass}, new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                //findAll
+                String methodName = method.getName();
+                //className = com.jiabb.dao.UserDao
+                String className = method.getDeclaringClass().getName();
+                String statementId = className + "." + methodName;
+                //返回值类型
+                Type genericReturnType = method.getGenericReturnType();
+                //判断是否进行了 泛化类型参数化
+                if (genericReturnType instanceof ParameterizedType) {
+                    return selectList(statementId, args);
+                } else {
+                    return selectOne(statementId, args);
+                }
+            }
+        });
+        return (T) proxyInstance;
     }
 }

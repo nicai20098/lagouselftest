@@ -3,8 +3,6 @@ package com.jiabb.util;
 import com.jiabb.config.Configuration;
 import com.jiabb.mapping.MappedStatement;
 import com.jiabb.mapping.ParameterMapping;
-import com.jiabb.parsing.GenericTokenParser;
-import com.jiabb.parsing.ParameterMappingTokenHandler;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -26,7 +24,7 @@ public class SimpleExecutor implements Executor {
     private Connection connection = null;
 
     public <E> List<E> query(Configuration configuration, MappedStatement mappedStatement, Object[] param) throws SQLException, NoSuchFieldException, IllegalAccessException, InstantiationException, IntrospectionException, InvocationTargetException {
-        //获取连接
+        //1.注册驱动，获取连接
         connection = configuration.getDataSource().getConnection();
         // select * from user where id = #{id} and username = #{username}
         String sql = mappedStatement.getSql();
@@ -41,7 +39,7 @@ public class SimpleExecutor implements Executor {
         List<ParameterMapping> parameterMappingList = boundsql.getParameterMappingList();
         for (int i = 0; i < parameterMappingList.size(); i++) {
             ParameterMapping parameterMapping = parameterMappingList.get(i);
-            String name = parameterMapping.getName();
+            String name = parameterMapping.getContent();
             //反射
             Field declaredField = paramterType.getDeclaredField(name);
             declaredField.setAccessible(true);

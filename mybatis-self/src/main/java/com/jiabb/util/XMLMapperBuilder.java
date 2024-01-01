@@ -58,7 +58,6 @@ public class XMLMapperBuilder {
     }
 
     private Class<?> getClassType(String classType) throws ClassNotFoundException {
-        System.out.println("classType -> " + classType);
         return Class.forName(classType);
     }
 }

@@ -17,6 +17,13 @@
         <!-- 批量别名 为类名 不区分大小写 -->
         <package name="com.jiabb.entity"/>
     </typeAliases>
+
+    <plugins>
+        <plugin interceptor="com.jiabb.plugin.MyPlugin">
+            <property name="name" value="myPluginProperties"/>
+        </plugin>
+    </plugins>
+
     <!-- 运行时环境 -->
     <environments default="development">
         <environment id="development">

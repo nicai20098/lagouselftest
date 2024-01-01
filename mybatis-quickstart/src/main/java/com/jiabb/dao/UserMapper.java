@@ -1,10 +1,7 @@
 package com.jiabb.dao;
 
 import com.jiabb.entity.User;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -14,6 +11,7 @@ import java.util.List;
  * @date: 2024/1/1 11:47
  * @since: 1.0
  */
+//@CacheNamespace
 public interface UserMapper {
 
     List<User> findAll();

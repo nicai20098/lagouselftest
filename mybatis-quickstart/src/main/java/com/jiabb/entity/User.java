@@ -2,6 +2,7 @@ package com.jiabb.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  * @since: 1.0
  */
 @Data
-public class User {
+public class User implements Serializable {
 
     private Integer id;
 

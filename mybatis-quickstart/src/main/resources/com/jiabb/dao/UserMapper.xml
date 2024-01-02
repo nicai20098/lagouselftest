@@ -1,84 +1,84 @@
-<!--<?xml version="1.0" encoding="UTF-8" ?>-->
-<!--<!DOCTYPE mapper-->
-<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
-<!--        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--<mapper namespace="com.jiabb.dao.UserMapper">-->
-<!--    &lt;!&ndash;  开启二级缓存  &ndash;&gt;-->
-<!--    <cache type="org.mybatis.caches.redis.RedisCache"/>-->
-<!--    &lt;!&ndash;抽取sql片段&ndash;&gt;-->
-<!--    <sql id="selectUser"> select * from user</sql>-->
+<mapper namespace="com.jiabb.dao.UserMapper">
+    <!--  开启二级缓存  -->
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
+    <!--抽取sql片段-->
+    <sql id="selectUser"> select * from user</sql>
 
-<!--    &lt;!&ndash;  查询用户  &ndash;&gt;-->
-<!--    <select id="findAll" resultType="user">-->
-<!--        <include refid="selectUser"></include>-->
-<!--    </select>-->
-<!--    &lt;!&ndash;  添加用户  &ndash;&gt;-->
-<!--    <insert id="add" parameterType="user">-->
-<!--        insert into user-->
-<!--        values (#{id}, #{username})-->
-<!--    </insert>-->
-<!--    &lt;!&ndash;  修改用户  &ndash;&gt;-->
-<!--    <update id="update" parameterType="user">-->
-<!--        update user-->
-<!--        set username = #{username}-->
-<!--        where id = #{id}-->
-<!--    </update>-->
-<!--    &lt;!&ndash;  删除用户  &ndash;&gt;-->
-<!--    <delete id="delete" parameterType="java.lang.Integer">-->
-<!--        delete-->
-<!--        from user-->
-<!--        where id = #{id}-->
-<!--    </delete>-->
-<!--    &lt;!&ndash;  if标签 &ndash;&gt;-->
-<!--    <select id="findByCondition" parameterType="user" resultType="user">-->
-<!--        <include refid="selectUser"></include>-->
-<!--        <where>-->
-<!--            <if test="id!=null">-->
-<!--                and id=#{id}-->
-<!--            </if>-->
-<!--            <if test="username!=null">-->
-<!--                and username=#{username}-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
-<!--    &lt;!&ndash;  foreach标签 &ndash;&gt;-->
-<!--    <select id="findByIds" parameterType="list" resultType="user">-->
-<!--        <include refid="selectUser"></include>-->
-<!--        <where>-->
-<!--            <foreach collection="list" open="id in (" close=")" item="id" separator=",">-->
-<!--                #{id}-->
-<!--            </foreach>-->
-<!--        </where>-->
-<!--    </select>-->
-<!--    <resultMap id="userMap" type="user">-->
-<!--        <result property="id" column="id"/>-->
-<!--        <result property="username" column="username"/>-->
-<!--        <collection property="orderList" ofType="com.jiabb.entity.Order">-->
-<!--            <result property="id" column="id"/>-->
-<!--            <result property="total" column="total"/>-->
-<!--            <result property="ordertime" column="ordertime"/>-->
-<!--        </collection>-->
-<!--    </resultMap>-->
-<!--    <select id="findUserAndOrder" resultMap="userMap">-->
-<!--        select *-->
-<!--        from `user` u-->
-<!--                 left join `order` o on o.uid = u.id-->
-<!--    </select>-->
-<!--    <resultMap id="userRoleMap" type="user">-->
-<!--        <result column="id" property="id"></result>-->
-<!--        <result column="username" property="username"></result>-->
-<!--        <collection property="roles" ofType="com.jiabb.entity.Role">-->
-<!--            <result column="rid" property="id"></result>-->
-<!--            <result column="rolename" property="rolename"></result>-->
-<!--        </collection>-->
-<!--    </resultMap>-->
-<!--    <select id="findAllUserAndRole" resultMap="userRoleMap">-->
-<!--        select u.*, r.*, r.id rid-->
-<!--        from user u-->
-<!--        left join user_role ur on-->
-<!--        u.id = ur.userid-->
-<!--         inner join role r on ur.roleid = r.id-->
-<!--    </select>-->
+    <!--  查询用户  -->
+    <select id="findAll" resultType="user">
+        <include refid="selectUser"></include>
+    </select>
+    <!--  添加用户  -->
+    <insert id="add" parameterType="user">
+        insert into user
+        values (#{id}, #{username})
+    </insert>
+    <!--  修改用户  -->
+    <update id="update" parameterType="user">
+        update user
+        set username = #{username}
+        where id = #{id}
+    </update>
+    <!--  删除用户  -->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete
+        from user
+        where id = #{id}
+    </delete>
+    <!--  if标签 -->
+    <select id="findByCondition" parameterType="user" resultType="user">
+        <include refid="selectUser"></include>
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="username!=null">
+                and username=#{username}
+            </if>
+        </where>
+    </select>
+    <!--  foreach标签 -->
+    <select id="findByIds" parameterType="list" resultType="user">
+        <include refid="selectUser"></include>
+        <where>
+            <foreach collection="list" open="id in (" close=")" item="id" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+    <resultMap id="userMap" type="user">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <collection property="orderList" ofType="com.jiabb.entity.Order">
+            <result property="id" column="id"/>
+            <result property="total" column="total"/>
+            <result property="ordertime" column="ordertime"/>
+        </collection>
+    </resultMap>
+    <select id="findUserAndOrder" resultMap="userMap">
+        select *
+        from `user` u
+                 left join `order` o on o.uid = u.id
+    </select>
+    <resultMap id="userRoleMap" type="user">
+        <result column="id" property="id"></result>
+        <result column="username" property="username"></result>
+        <collection property="roles" ofType="com.jiabb.entity.Role">
+            <result column="rid" property="id"></result>
+            <result column="rolename" property="rolename"></result>
+        </collection>
+    </resultMap>
+    <select id="findAllUserAndRole" resultMap="userRoleMap">
+        select u.*, r.*, r.id rid
+        from user u
+        left join user_role ur on
+        u.id = ur.userid
+         inner join role r on ur.roleid = r.id
+    </select>
 
-<!--</mapper>-->
+</mapper>

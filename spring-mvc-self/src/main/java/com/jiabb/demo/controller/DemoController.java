@@ -1,13 +1,12 @@
-package com.jiabb.mvcframework.controller;
+package com.jiabb.demo.controller;
 
 import com.jiabb.mvcframework.annotations.LocalAutowired;
 import com.jiabb.mvcframework.annotations.LocalController;
 import com.jiabb.mvcframework.annotations.LocalRequestMapping;
-import com.jiabb.mvcframework.service.DemoService;
+import com.jiabb.demo.service.DemoService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.annotation.Retention;
 
 /**
  * @description: TODO
@@ -23,6 +22,7 @@ public class DemoController {
     private DemoService demoService;
 
 
+    @LocalRequestMapping("/query")
     public String query(HttpServletRequest request, HttpServletResponse response, String name) {
         return demoService.get(name);
     }

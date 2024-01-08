@@ -1,7 +1,7 @@
-package com.jiabb.mvcframework.service.impl;
+package com.jiabb.demo.service.impl;
 
 import com.jiabb.mvcframework.annotations.LocalService;
-import com.jiabb.mvcframework.service.DemoService;
+import com.jiabb.demo.service.DemoService;
 
 /**
  * @description: TODO

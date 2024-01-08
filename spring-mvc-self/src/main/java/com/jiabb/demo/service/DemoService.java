@@ -1,4 +1,4 @@
-package com.jiabb.mvcframework.service;
+package com.jiabb.demo.service;
 
 
 /**

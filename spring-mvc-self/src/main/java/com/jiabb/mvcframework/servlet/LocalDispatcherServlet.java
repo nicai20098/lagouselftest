@@ -2,7 +2,11 @@ package com.jiabb.mvcframework.servlet;
 
 import com.jiabb.mvcframework.annotations.LocalAutowired;
 import com.jiabb.mvcframework.annotations.LocalController;
+import com.jiabb.mvcframework.annotations.LocalRequestMapping;
 import com.jiabb.mvcframework.annotations.LocalService;
+import com.jiabb.mvcframework.pojo.Handler;
+import jdk.nashorn.internal.ir.CallNode;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,7 +17,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @description: TODO
@@ -29,6 +37,8 @@ public class LocalDispatcherServlet extends HttpServlet {
     private List<String> classNames = new ArrayList<>();
     //ioc容器
     private Map<String, Object> ioc = new HashMap<>();
+    //handleMapping
+    private Map<String, Handler> handleMapping = new HashMap<>();
 
 
     @Override
@@ -38,7 +48,32 @@ public class LocalDispatcherServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //处理请求
+        //处理请求 根据url 找到对应method方法 进行调用
+        String requestURI = req.getRequestURI();
+        Handler handler = handleMapping.get(requestURI);
+        Method method = handler.getMethod();
+
+        try {
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            Object[] args = new Object[parameterTypes.length];
+            Map<String, String[]> parameterMap = req.getParameterMap();
+            for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+                String value = StringUtils.join(entry.getValue(), ",");
+                if (handler.getParamIndexMapping().containsKey(entry.getKey())) {
+                    Integer index = handler.getParamIndexMapping().get(entry.getKey());
+                    args[index] = value;
+                }
+            }
+            Integer reqIndex = handler.getParamIndexMapping().get(HttpServletRequest.class.getSimpleName());
+            args[reqIndex] = req;
+            Integer resIndex = handler.getParamIndexMapping().get(HttpServletResponse.class.getSimpleName());
+            args[resIndex] = resp;
+            method.invoke(handler.getController(), args);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -64,7 +99,48 @@ public class LocalDispatcherServlet extends HttpServlet {
     }
 
     // 构造一个handleMapping处理器映射器
+    // 目的: 将url和 method建立关联
     private void initHandleMapping() {
+        if (ioc.isEmpty()) {
+            return;
+        }
+        for (Map.Entry<String, Object> entry : ioc.entrySet()) {
+            Class<?> aClass = entry.getValue().getClass();
+            if (!aClass.isAnnotationPresent(LocalController.class)) {
+                continue;
+            }
+            String baseUrl = "";
+            if (aClass.isAnnotationPresent(LocalRequestMapping.class)) {
+                LocalRequestMapping annotation = aClass.getAnnotation(LocalRequestMapping.class);
+                baseUrl = annotation.value();
+            }
+            //获取方法
+            Method[] methods = aClass.getMethods();
+            for (Method method : methods) {
+                if (!method.isAnnotationPresent(LocalRequestMapping.class)) {
+                    continue;
+                }
+
+                LocalRequestMapping annotation = method.getAnnotation(LocalRequestMapping.class);
+                String url = baseUrl + annotation.value();
+
+                Handler handler = new Handler(entry.getValue(), method, Pattern.compile(url));
+                Parameter[] parameters = method.getParameters();
+                for (int i = 0; i < parameters.length; i++) {
+                    Parameter parameter = parameters[i];
+                    Class<?> type = parameter.getType();
+                    if (Objects.equals(HttpServletRequest.class, type) || Objects.equals(HttpServletResponse.class, type))  {
+                        handler.getParamIndexMapping().put(type.getSimpleName(), i);
+                    } else {
+                        handler.getParamIndexMapping().put(parameter.getName(), i);
+                    }
+                }
+
+                handleMapping.put(url, handler);
+            }
+
+        }
+
     }
 
     //实现依赖注入
@@ -93,7 +169,8 @@ public class LocalDispatcherServlet extends HttpServlet {
                 declaredField.setAccessible(true);
 
                 try {
-                    declaredField.set(entry.getKey(), ioc.get(beanName));
+                    Object o = ioc.get(beanName);
+                    declaredField.set(entry.getValue(), o);
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }

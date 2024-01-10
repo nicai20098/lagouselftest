@@ -5,6 +5,7 @@ import com.jiabb.pojo.Account;
 import com.jiabb.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @since: 1.0
  */
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService {
 
 

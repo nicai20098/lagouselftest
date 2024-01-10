@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+">
+
+
+    <context:property-placeholder location="jdbc.properties"/>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+
+
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="com.jiabb.pojo"/>
+        <!--   jpa 具体实现     -->
+        <property name="persistenceProvider">
+            <bean class="org.hibernate.jpa.HibernatePersistenceProvider"/>
+        </property>
+        <!--   jpa方言配置     -->
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+        </property>
+        <!--   配置具体provider hibernate框架执行细节     -->
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <!--   定义hibernate框架的一些细节     -->
+                <!--
+                    配置数据表是否自动创建
+                    因为我们会创建pojo和表数据直接的映射关系
+                    程序启动是,如果数据表还没有创建,是否程序给创建一下
+                -->
+                <property name="generateDdl" value="false"/>
+                <!--
+                    指定数据库的类型
+                    hibernate本身是dao层框架 需要指定数据库
+                -->
+                <property name="database" value="MYSQL"/>
+                <!--   配置数据库的方言     -->
+                <property name="databasePlatform" value="org.hibernate.dialect.MySQLDialect"/>
+                <!--   是否显示sql     -->
+                <property name="showSql" value="true"/>
+            </bean>
+        </property>
+
+    </bean>
+    <!--   引入上面创建的entityManagerFactory     -->
+    <jpa:repositories base-package="com.jiabb.mapper" entity-manager-factory-ref="entityManagerFactory"
+                transaction-manager-ref="transactionManager"/>
+    <!--   事务管理器配置     -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    <!--   声明式事务配置     -->
+<!--    <tx.annotation-driven/>-->
+
+    <!--   配置spring包扫描   -->
+    <context:component-scan base-package="com.jiabb"/>
+
+</beans>

@@ -1,17 +1,22 @@
 package com.jiabb.service.impl;
 
+import com.jiabb.domain.Permission;
 import com.jiabb.domain.User;
+import com.jiabb.service.PermissionService;
 import com.jiabb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -21,6 +26,9 @@ import java.util.Objects;
 public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     UserService userService;
+
+    @Resource
+    private PermissionService permissionService;
 
     /**
      * 根据用户名查询用户
@@ -36,7 +44,17 @@ public class MyUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(username);// 用户名没有找到
         }
         // 先声明一个权限集合, 因为构造方法里面不能传入null
-        Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+//        if (username.equalsIgnoreCase("user")) {
+//            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//        } else {
+//            authorities.add(new SimpleGrantedAuthority("ROLE_PRODUCT"));
+//        }
+        List<Permission> permissions = permissionService.findByUserId(user.getId());
+        for (Permission permission : permissions) {
+            authorities.add(new SimpleGrantedAuthority(permission.getPermissionTag()));
+        }
+
         // 需要返回一个SpringSecurity的UserDetails对象
         UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getUsername(),
 //                "{noop}" + user.getPassword(),// {noop}表示不使用密码加密

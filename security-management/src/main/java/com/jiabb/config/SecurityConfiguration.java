@@ -1,6 +1,9 @@
 package com.jiabb.config;
 
+import com.jiabb.domain.Permission;
 import com.jiabb.filter.ValidateCodeFilter;
+import com.jiabb.handle.MyAccessDeniedHandler;
+import com.jiabb.service.PermissionService;
 import com.jiabb.service.impl.MyAuthenticationService;
 import com.jiabb.service.impl.MyUserDetailsService;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.List;
 
 
 /**
@@ -34,6 +38,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Resource
     private ValidateCodeFilter validateCodeFilter;
+    @Resource
+    private MyAccessDeniedHandler myAccessDeniedHandler;
+    @Resource
+    private PermissionService permissionService;
 
     /**
      * 身份安全管理器
@@ -59,11 +67,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+
+        // 设置/user开头得请求需要ADMIN权限
+//        http.authorizeRequests().antMatchers("/user/**").hasRole("ADMIN");
+//        http.authorizeRequests().antMatchers("/user/**").access("@myAuthorizationService.check(authentication, httpServletRequest)");
+        List<Permission> permissions = permissionService.list();
+        for (Permission permission : permissions) {
+            http.authorizeRequests().antMatchers(permission.getPermissionUrl()).hasAuthority(permission.getPermissionTag());
+        }
+
+        http.exceptionHandling().accessDeniedHandler(myAccessDeniedHandler);
         http.sessionManagement()
-                .invalidSessionUrl("/toLoginPage")// session无效后跳转的路径
-                .maximumSessions(1)//设置session最大会话数量 ,1同一时间只能有一个
-                .maxSessionsPreventsLogin(true)//当达到最大会话个数时阻止登录
-                .expiredUrl("/toLoginPage");//设置session过期后跳转路径
+                .invalidSessionUrl("/toLoginPage");// session无效后跳转的路径
+//                .maximumSessions(1)//设置session最大会话数量 ,1同一时间只能有一个
+//                .maxSessionsPreventsLogin(true)//当达到最大会话个数时阻止登录
+//                .expiredUrl("/toLoginPage");//设置session过期后跳转路径
         // 加在用户名密码过滤器的前面
         http.addFilterBefore(validateCodeFilter,
                 UsernamePasswordAuthenticationFilter.class);
@@ -83,9 +101,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .tokenRepository(getPersistentTokenRepository());//所有请求都需要登录认证才能访问; }
 
         // 关闭csrf防护
-//        http.csrf().disable();
+        http.csrf().disable();
         //开启csrf防护, 可以设置哪些不需要防护
-        http.csrf().ignoringAntMatchers("/user/save");
+//        http.csrf().ignoringAntMatchers("/user/save");
         // 允许iframe加载页面
         http.headers().frameOptions().sameOrigin();
         //允许跨域

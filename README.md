@@ -17,3 +17,6 @@ vm参数
 -Dcatalina.base=/D:/workspace/lagouselftest/tomcat-source-code
 -Djava.util.logging.manmager=org.apache.juli.ClassLoaderLogManager
 -Djava.util.logging.config.file=/D:/workspace/lagouselftest/tomcat-source-code/conf/logging.properties
+
+控制台部分日志乱码情况 修改以下内容会部分乱码可恢复 但是系统前缀会乱码
+java.util.logging.ConsoleHandler.encoding = ISO-8859-1

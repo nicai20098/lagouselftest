@@ -24,6 +24,7 @@
         <module>webflux-rxjava</module>
         <module>minicat</module>
         <module>tomcat-source-code</module>
+        <module>hash-demo</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

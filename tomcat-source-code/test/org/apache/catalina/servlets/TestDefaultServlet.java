@@ -99,7 +99,7 @@ public class TestDefaultServlet extends TomcatBaseTest {
         Context ctxt = tomcat.addContext("", appDir.getAbsolutePath());
         Wrapper defaultServlet = Tomcat.addServlet(ctxt, "default",
                 "org.apache.catalina.servlets.DefaultServlet");
-        defaultServlet.addInitParameter("fileEncoding", "ISO-8859-1");
+        defaultServlet.addInitParameter("fileEncoding", "UTF-8");
         ctxt.addServletMappingDecoded("/", "default");
 
         ctxt.addMimeMapping("html", "text/html");

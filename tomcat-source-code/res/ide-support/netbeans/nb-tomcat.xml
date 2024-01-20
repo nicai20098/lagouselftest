@@ -76,7 +76,7 @@
            debug="true"
            deprecation="${compile.deprecation}"
            source="${compile.release}"
-           encoding="ISO-8859-1"
+           encoding="UTF-8"
            includeantruntime="false">
       <classpath path="${nb-test.classpath}"/>
     </javac>

@@ -704,7 +704,7 @@
            debug="${compile.debug}"
            deprecation="${compile.deprecation}"
            release="${compile.release}"
-           encoding="ISO-8859-1"
+           encoding="UTF-8"
            includeAntRuntime="true" >
       <!-- Uncomment this to show unchecked warnings:
       <compilerarg value="-Xlint:unchecked"/>
@@ -739,7 +739,7 @@
   <target name="compile-prepare">
     <!-- Add the builtin catalina.properties -->
     <copy todir="java/org/apache/catalina/startup"
-          file="conf/catalina.properties" encoding="ISO-8859-1">
+          file="conf/catalina.properties" encoding="UTF-8">
       <filterset refid="version.filters"/>
     </copy>
     <!-- Copy jdbc-pool documentation -->
@@ -757,7 +757,7 @@
            debug="${compile.debug}"
            deprecation="${compile.deprecation}"
            release="${compile.release}"
-           encoding="ISO-8859-1"
+           encoding="UTF-8"
            includeAntRuntime="true" >
       <!-- Uncomment this to show unchecked warnings:
       <compilerarg value="-Xlint:unchecked"/>
@@ -810,7 +810,7 @@
 
     <mkdir dir="${tomcat.manifests}" />
     <copy todir="${tomcat.manifests}" overwrite="yes" filtering="yes"
-      encoding="ISO-8859-1">
+      encoding="UTF-8">
       <filterset refid="version.filters"/>
       <fileset dir="${tomcat.home}/res/META-INF" />
     </copy>
@@ -818,7 +818,7 @@
     <!-- Ensure text files in JARs have consistent line endings. Required for
     reproducible builds. -->
     <fixcrlf srcdir="${tomcat.manifests}" eol="lf"
-        encoding="ISO-8859-1" fixlast="false" >
+        encoding="UTF-8" fixlast="false" >
       <patternset refid="text.files" />
     </fixcrlf>
   </target>
@@ -1058,14 +1058,14 @@
         <include name="docs/**/*.html"/>
       </fileset>
     </copy>
-    <copy todir="${tomcat.build}/webapps/docs" encoding="ISO-8859-1">
+    <copy todir="${tomcat.build}/webapps/docs" encoding="UTF-8">
       <filterset refid="version.filters"/>
       <fileset dir=".">
         <include name="BUILDING.txt"/>
         <include name="RUNNING.txt"/>
       </fileset>
     </copy>
-    <copy tofile="${tomcat.build}/webapps/docs/RELEASE-NOTES.txt" file="RELEASE-NOTES" encoding="ISO-8859-1">
+    <copy tofile="${tomcat.build}/webapps/docs/RELEASE-NOTES.txt" file="RELEASE-NOTES" encoding="UTF-8">
       <filterset refid="version.filters"/>
     </copy>
     <copy tofile="${tomcat.build}/webapps/docs/mbeans-descriptors.dtd"
@@ -1176,7 +1176,7 @@
          <exclude name="**/*.bat"/>
       </fileset>
     </copy>
-    <copy todir="${tomcat.build}/bin" encoding="ISO-8859-1">
+    <copy todir="${tomcat.build}/bin" encoding="UTF-8">
       <filterset refid="version.filters"/>
       <fileset dir="bin">
          <include name="**/*.sh"/>
@@ -1187,7 +1187,7 @@
     <chmod dir="${tomcat.build}/bin" includes="*.sh" perm="+x"/>
 
     <!-- Copy static resource files -->
-    <copy todir="${tomcat.build}/conf" encoding="ISO-8859-1">
+    <copy todir="${tomcat.build}/conf" encoding="UTF-8">
       <filterset refid="version.filters"/>
       <fileset dir="conf">
         <include name="**/*.policy"/>
@@ -1214,7 +1214,7 @@
       </fileset>
     </copy>
 
-    <copy tofile="${tomcat.build}/webapps/ROOT/RELEASE-NOTES.txt" file="RELEASE-NOTES" encoding="ISO-8859-1">
+    <copy tofile="${tomcat.build}/webapps/ROOT/RELEASE-NOTES.txt" file="RELEASE-NOTES" encoding="UTF-8">
       <filterset refid="version.filters"/>
     </copy>
 
@@ -1242,7 +1242,7 @@
              debug="${compile.debug}" deprecation="${compile.deprecation}"
              release="${compile.release}"
              classpath="${tomcat.classes}"
-             encoding="ISO-8859-1"
+             encoding="UTF-8"
              includeantruntime="false">
     </javac>
 

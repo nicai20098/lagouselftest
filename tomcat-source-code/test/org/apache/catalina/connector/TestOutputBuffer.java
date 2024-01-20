@@ -119,7 +119,7 @@ public class TestOutputBuffer extends TomcatBaseTest{
                 throws ServletException, IOException {
 
             resp.setContentType("text/plain");
-            resp.setCharacterEncoding("ISO-8859-1");
+            resp.setCharacterEncoding("UTF-8");
 
             Writer w = resp.getWriter();
 

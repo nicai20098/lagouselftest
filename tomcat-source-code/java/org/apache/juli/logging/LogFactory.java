@@ -86,6 +86,7 @@ public class LogFactory {
 
         // Look via a ServiceLoader for a Log implementation that has a
         // constructor taking the String name.
+        // 通过ServiceLoader 尝试加载Log 的是实现类
         ServiceLoader<Log> logLoader = ServiceLoader.load(Log.class);
         Constructor<? extends Log> m=null;
         for (Log log: logLoader) {
@@ -98,6 +99,7 @@ public class LogFactory {
                 throw new Error(e);
             }
         }
+        // 如果没有定义Log的实现类, discoveredLogConstructor 为null
         discoveredLogConstructor=m;
     }
 
@@ -126,6 +128,7 @@ public class LogFactory {
      *  instance cannot be returned
      */
     public Log getInstance(String name) throws LogConfigurationException {
+        // 如果没有定义discoveredLogConstructor 默认使用 DirectJDKLog
         if (discoveredLogConstructor == null) {
             return DirectJDKLog.getInstance(name);
         }

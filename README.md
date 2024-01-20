@@ -13,10 +13,12 @@
 启动类路径:
 org.apache.catalina.startup.Bootstrap
 vm参数
--Dcatalina.home=/D:/workspace/lagouselftest/tomcat-source-code
--Dcatalina.base=/D:/workspace/lagouselftest/tomcat-source-code
+-Dcatalina.home=D:/workspace/lagouselftest/tomcat-source-code/source
+-Dcatalina.base=D:/workspace/lagouselftest/tomcat-source-code/source
 -Djava.util.logging.manmager=org.apache.juli.ClassLoaderLogManager
--Djava.util.logging.config.file=/D:/workspace/lagouselftest/tomcat-source-code/conf/logging.properties
+-Djava.util.logging.config.file=D:/workspace/lagouselftest/tomcat-source-code/source/conf/logging.properties
+-Dfile.encoding=UTF-8
+-Dsun.jnu.encoding=UTF-8
 
 控制台部分日志乱码情况 修改以下内容会部分乱码可恢复 但是系统前缀会乱码
 java.util.logging.ConsoleHandler.encoding = ISO-8859-1

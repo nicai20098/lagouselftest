@@ -187,7 +187,7 @@ public abstract class SimpleHttpClient {
 
     public void connect(int connectTimeout, int soTimeout)
            throws UnknownHostException, IOException {
-        final String encoding = "ISO-8859-1";
+        final String encoding = "UTF-8";
         SocketAddress addr = new InetSocketAddress("localhost", port);
         socket = new Socket();
         socket.setSoTimeout(soTimeout);

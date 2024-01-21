@@ -25,6 +25,7 @@
         <module>minicat</module>
         <module>tomcat-source-code</module>
         <module>hash-demo</module>
+        <module>global_id</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

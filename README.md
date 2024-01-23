@@ -15,7 +15,7 @@ org.apache.catalina.startup.Bootstrap
 vm参数
 -Dcatalina.home=D:/workspace/lagouselftest/tomcat-source-code/source
 -Dcatalina.base=D:/workspace/lagouselftest/tomcat-source-code/source
--Djava.util.logging.manmager=org.apache.juli.ClassLoaderLogManager
+-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
 -Djava.util.logging.config.file=D:/workspace/lagouselftest/tomcat-source-code/source/conf/logging.properties
 -Dfile.encoding=UTF-8
 -Dsun.jnu.encoding=UTF-8

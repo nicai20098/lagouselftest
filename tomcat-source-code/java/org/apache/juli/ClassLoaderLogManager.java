@@ -99,6 +99,7 @@ public class ClassLoaderLogManager extends LogManager {
     /**
      * Map containing the classloader information, keyed per classloader. A weak hashmap is used to ensure no
      * classloader reference is leaked from application redeployment.
+     * // 存放ClassLoader, ClassLoaderLogInfo  清理时是使用
      */
     protected final Map<ClassLoader, ClassLoaderLogInfo> classLoaderLoggers = new WeakHashMap<>(); // Guarded by this
 

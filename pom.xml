@@ -26,6 +26,7 @@
         <module>tomcat-source-code</module>
         <module>hash-demo</module>
         <module>global_id</module>
+        <module>time-job</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

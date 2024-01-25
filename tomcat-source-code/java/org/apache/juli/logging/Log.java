@@ -32,7 +32,9 @@ package org.apache.juli.logging;
  * <li>fatal (the most serious)</li>
  * </ol>
  * <p>The mapping of these log levels to the concepts used by the underlying
+ * 日志系统依赖于实现
  * logging system is implementation dependent.
+ * 实现应该确保, 应该跟预期一样的排序
  * The implementation should ensure, though, that this ordering behaves
  * as expected.</p>
  *

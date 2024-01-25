@@ -247,6 +247,7 @@ public class StandardRoot extends LifecycleMBeanBase implements WebResourceRoot 
         if (File.separatorChar == '\\') {
             // On Windows '\\' is a separator so in case a Windows style
             // separator has managed to make it into the path, replace it.
+            // 路径分隔符替换 将\\ -> /
             result = RequestUtil.normalize(path, true);
         } else {
             // On UNIX and similar systems, '\\' is a valid file name so do not

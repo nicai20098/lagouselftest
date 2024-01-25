@@ -781,7 +781,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
         if (log.isDebugEnabled()) {
             log.debug("    findClass(" + name + ")");
         }
-
+        //校验状态 是否符合类加载
         checkStateForClassLoading(name);
 
         // (1) Permission to define this class when using a SecurityManager
@@ -2354,6 +2354,7 @@ public abstract class WebappClassLoaderBase extends URLClassLoader
     }
 
 
+    // 类名 转path   ch.qos.logback.classic.servlet.LogbackServletContainerInitializer --> /ch/qos/logback/classic/servlet/LogbackServletContainerInitializer.class
     private String binaryNameToPath(String binaryName, boolean withLeadingSlash) {
         // 1 for leading '/', 6 for ".class"
         StringBuilder path = new StringBuilder(7 + binaryName.length());

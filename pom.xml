@@ -28,6 +28,8 @@
         <module>global_id</module>
         <module>time-job</module>
         <module>socket-demo</module>
+        <module>netty-demo</module>
+        <module>netty-springboot</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

@@ -27,6 +27,7 @@
         <module>hash-demo</module>
         <module>global_id</module>
         <module>time-job</module>
+        <module>socket-demo</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

@@ -30,6 +30,7 @@
         <module>socket-demo</module>
         <module>netty-demo</module>
         <module>netty-springboot</module>
+        <module>zookeeper-demo</module>
     </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

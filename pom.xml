@@ -30,6 +30,8 @@
         <module>socket-demo</module>
         <module>netty-demo</module>
         <module>netty-springboot</module>
+        <module>algorithm-demo</module>
+        <module>guava-demo</module>
         <module>zookeeper-demo</module>
     </modules>
     <properties>
